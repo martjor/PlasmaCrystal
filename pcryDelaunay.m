@@ -2,8 +2,8 @@ function ax = pcryDelaunay(x,y,varargin)
 %PCRYDELAUNAY computes the Delaunay triangulation of the given set of
 %points and color the cells according to the specified vector.
 %   AX = PCRYDELAUNAY(X,Y) computes the Delaunay triangulation of the given
-%   set of points and returns a handel to the newly created axis.
-%
+%   set of points and returns a handle to the newly created axis.
+%   
 %   AX = PCRYDELAUNAY(X,Y,C) computes the Delaunay triangiulation of the
 %   given set of points and colors the cells with the values stored in C.
 
