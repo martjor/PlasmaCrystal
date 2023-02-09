@@ -46,13 +46,4 @@ function ax = pcryDelaunay(x,y,varargin)
         scatter(x,y,50,'.k');
         hold off
     end
-        
-        
-    
-
-
-
-    
-
-
 end
