@@ -9,25 +9,24 @@ function ax = pcryVoronoi(x,y,varargin)
 %   vector C. 
 
     % VALIDATE INPUTS
-    if nargin > 3
-        error('Number of input parameters is invalid')
+    if nargin == 3
+        color = varargin{1};
+        if (length(x) ~= length(color)) || (length(y) ~= length(color))
+            error('Error: dimensions of input vectors diff')
+        end
+    elseif nargin < 3
+        color = 'None';
+    else
+        error('Number of input parameters is invalid');
     end
 
     % CALCULATE TRIANGULATION
     [v,c] = voronoin([x y]);
-
-    if nargin == 3
-        % C = varargin{1};
-        fprintf('Not yet implemented, sorry :P');
-    end
-%     if numel(C) ~= numel(x)
-%         error('The number of elements in C must match the size of X')
-%     end
         
     % Plot
     ax = axes;
     hold on
-    plotVoronoi(v,c);
+    plotVoronoi(v,c,color);
     scatter(x,y,50,'.k','DisplayName','Dust');
     hold off
 
@@ -38,8 +37,7 @@ function ax = pcryVoronoi(x,y,varargin)
     xlim([min(x) max(x)])
     ylim([min(y) max(y)])
         
-
-    function plotVoronoi(v,c)
+    function plotVoronoi(v,c,color)
         % Determine the different geometries present in the dataset
         N = length(c);
         geometry = zeros(N,1);
@@ -50,18 +48,19 @@ function ax = pcryVoronoi(x,y,varargin)
         % Loop through each geometry and plot
         vx = v(:,1);
         vy = v(:,2);
-        color = linspace(0,1,numel(geometry));
+        
         shape = unique(geometry);
         for i = 1:numel(shape)
             idx = geometry == shape(i);
             jdx = cell2mat(c(idx))';
-            patch(vx(jdx),vy(jdx),color(i));
-        end
 
-        % Add a legend
-        str = 'Geometry = ';
-        str = repmat(str,[numel(shape) 1]);
-        str = str + string(shape);
-        legend(str)
+            if ischar(color)
+                patch(vx(jdx),vy(jdx),'r','FaceColor','None');
+            else
+                colormap jet
+                patch(vx(jdx),vy(jdx),color(idx),'LineStyle','None');
+                colorbar
+            end
+        end
     end
 end
