@@ -8,6 +8,7 @@ function T = pcryReadTable(path,varargin)
 %   specified path with the format provided by FIJI
 
     applyFormat = false;
+    format = 'trackpy';
     
     % Check Inputs
     if nargin > 2
@@ -22,7 +23,25 @@ function T = pcryReadTable(path,varargin)
         end
     end
     
+    % Read the table from the specified path
     T = readtable(path);
+
+    % As a safety check, rename the columns according to the software that
+    % was used to generate them
+    if strcmp(format,'trackpy')
+        T.Properties.VariableNames = ["Var1",...
+                                      "y",...
+                                      "x",...
+                                      "mass",...
+                                      "size",...
+                                      "ecc",...
+                                      "signal",...
+                                      "raw_mass",...
+                                      "ep",...
+                                      "frame",...
+                                      "particle"];
+    end
+    
     
     label = {'background'};
     label = repmat(label,size(T,1),1);
