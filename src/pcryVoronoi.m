@@ -24,20 +24,14 @@ function ax = pcryVoronoi(x,y,varargin)
     [v,c] = voronoin([x y]);
         
     % Plot
-    ax = axes;
+    ax = gca;
+   
     hold on
-    plotVoronoi(v,c,color);
-    scatter(x,y,50,'.k','DisplayName','Dust');
+    plotVoronoi(ax,v,c,color);
+    scatter(ax,x,y,50,'.k','DisplayName','Dust');
     hold off
-
-    % Format plotx
-    axis equal
-    xlabel('x')
-    ylabel('y')
-    xlim([min(x) max(x)])
-    ylim([min(y) max(y)])
         
-    function plotVoronoi(v,c,color)
+    function plotVoronoi(ax,v,c,color)
         % Determine the different geometries present in the dataset
         N = length(c);
         geometry = zeros(N,1);
@@ -48,17 +42,17 @@ function ax = pcryVoronoi(x,y,varargin)
         % Loop through each geometry and plot
         vx = v(:,1);
         vy = v(:,2);
-        
+
         shape = unique(geometry);
         for i = 1:numel(shape)
             idx = geometry == shape(i);
             jdx = cell2mat(c(idx))';
 
             if ischar(color)
-                patch(vx(jdx),vy(jdx),'r','FaceColor','None');
+                patch(ax,vx(jdx),vy(jdx),'r','FaceColor','None');
             else
-                colormap jet
-                patch(vx(jdx),vy(jdx),color(idx),'LineStyle','None');
+                colormap cool
+                patch(ax,vx(jdx),vy(jdx),color(idx),'LineStyle','None');
                 colorbar
             end
         end
