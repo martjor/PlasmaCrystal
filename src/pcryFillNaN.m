@@ -1,4 +1,4 @@
-function T_Nan = pcryFillNaN(T,numParticles,numFrames)
+function Tracking_fxd = pcryFillNaN(Tracking)
 %PCRYFILLNAN Fills the missing frames of particles with rows of NaN values
 %   The table we obtain from either FIJI or TrackPy only contains the rows
 %   for the frames where a particle was detected. If a given particle i was
@@ -7,24 +7,27 @@ function T_Nan = pcryFillNaN(T,numParticles,numFrames)
 %   it difficult to perform calculation on the data such as with the
 %   functin diff, which simply calculates the difference between two
 %   contiguous cells. 
-    NUM_ROWS                = numParticles * numFrames;
+
+    numParticles = numel(unique(Tracking.particle));
+    numFrames = numel(unique(Tracking.frame));
+    numRows = numParticles * numFrames;
     
     particle                = unique(Tracking.particle);
     particle                = repmat(particle',[numFrames 1]);
-    particle                = reshape(particle,NUM_ROWS,1);
+    particle                = reshape(particle,numRows,1);
     
     frame                   = unique(Tracking.frame);
     frame                   = repmat(frame,[1 numParticles]);
-    frame                   = reshape(frame,NUM_ROWS,1);
+    frame                   = reshape(frame,numRows,1);
     
-    x                       = NaN(NUM_ROWS,1);
-    y                       = NaN(NUM_ROWS,1);
-    vx                      = NaN(NUM_ROWS,1);
-    vy                      = NaN(NUM_ROWS,1);
-    KE                      = NaN(NUM_ROWS,1);
+    x                       = NaN(numRows,1);
+    y                       = NaN(numRows,1);
+    vx                      = NaN(numRows,1);
+    vy                      = NaN(numRows,1);
+    KE                      = NaN(numRows,1);
     
     label = {'background'};
-    label = repmat(label,NUM_ROWS,1);
+    label = repmat(label,numRows,1);
     label = categorical(label,{'background','torsion','cage'});
     
     Tracking_fxd = table(particle,frame,x,y,vx,vy,KE,label);
