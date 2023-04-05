@@ -51,9 +51,7 @@ function ax = pcryVoronoi(x,y,varargin)
             if ischar(color)
                 patch(ax,vx(jdx),vy(jdx),'r','FaceColor','None');
             else
-                colormap cool
                 patch(ax,vx(jdx),vy(jdx),color(idx),'LineStyle','None');
-                colorbar
             end
         end
     end
