@@ -42,7 +42,6 @@ function T = pcryReadTable(path,varargin)
                                       "particle"];
     end
     
-    
     label = {'background'};
     label = repmat(label,size(T,1),1);
     label = categorical(label,{'background','torsion','cage'});
@@ -57,6 +56,16 @@ function T = pcryReadTable(path,varargin)
         T.Properties.VariableNames{idx2} = 'frame';
     end
     
+    % Put everything together into a table
     T = T(:,["particle","frame","x","y","label"]);
+
+    % Mirror along the y-axis
+    T.y = T.y - max(T.y);
+    T.y = -T.y;
+
+    % Correct particle number to start at 1
+    if min(T.particle == 0)
+        T.particle = T.particle + 1;
+    end
 end
 
